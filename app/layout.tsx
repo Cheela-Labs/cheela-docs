@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { JetBrains_Mono } from "next/font/google";
 import localFont from "next/font/local";
 import "./globals.css";
+import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 
 const ranade = localFont({
 	src: "./fonts/Ranade-Variable.ttf",
@@ -35,6 +36,7 @@ export default function RootLayout({
 				className={`${ranade.variable} ${jetbrainsMono.variable} bg-bg-page text-fg-primary antialiased`}
 			>
 				{children}
+				<GoogleAnalytics />
 			</body>
 		</html>
 	);

@@ -1,5 +1,6 @@
 import { NavBar } from "@/components/chrome/nav-bar";
 import { SiteFooter } from "@/components/chrome/site-footer";
+import { site } from "@/lib/site";
 
 const NAV_GROUPS = [
 	{
@@ -170,17 +171,17 @@ export default function DocsPage() {
 					<div className="mt-12 flex flex-wrap items-center justify-between gap-4 rounded-md border border-border-default p-6">
 						<div>
 							<div className="text-sm font-semibold">
-								Want to try this without installing anything?
+								Ready to run this for real?
 							</div>
 							<div className="text-sm text-fg-secondary">
-								Run it live in the playground.
+								Create a runtime and deploy it from the dashboard.
 							</div>
 						</div>
 						<a
-							href="https://www.cheelalabs.com/playground"
+							href={site.dashboard}
 							className="inline-flex shrink-0 rounded-md bg-accent px-4 py-2.5 text-sm font-medium text-fg-on-accent"
 						>
-							Open playground
+							Open dashboard
 						</a>
 					</div>
 				</main>

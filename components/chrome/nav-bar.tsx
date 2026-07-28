@@ -1,10 +1,13 @@
+"use client";
+
+import { Menu, X } from "lucide-react";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import { site } from "@/lib/site";
 
 const NAV_ITEMS = [
 	{ label: "Why Cheela", href: `${site.website}/why-cheela` },
 	{ label: "Docs", href: "/", active: true },
-	{ label: "Playground", href: `${site.website}/playground` },
 	{ label: "Pricing", href: `${site.website}/pricing` },
 	{ label: "Blog", href: `${site.website}/blog` },
 	{ label: "Changelog", href: `${site.website}/changelog` },
@@ -12,64 +15,137 @@ const NAV_ITEMS = [
 	{ label: "Contact", href: `${site.website}/contact` },
 ];
 
+function NpmIcon() {
+	return (
+		<svg
+			aria-hidden="true"
+			fill="currentColor"
+			height="20"
+			viewBox="0 0 24 24"
+			width="20"
+		>
+			<path d="M1.5 6h21v12h-6v-9h-3v9h-3v-9H4.5v9h-3V6z" />
+		</svg>
+	);
+}
+
 export function NavBar() {
+	const [open, setOpen] = useState(false);
+
+	useEffect(() => {
+		if (!open) return;
+
+		function onKeyDown(event: KeyboardEvent) {
+			if (event.key === "Escape") setOpen(false);
+		}
+
+		window.addEventListener("keydown", onKeyDown);
+		return () => window.removeEventListener("keydown", onKeyDown);
+	}, [open]);
+
 	return (
 		<header className="sticky top-0 z-40 border-b border-border-default bg-bg-page">
-			<div className="mx-auto flex h-[72px] max-w-[var(--container-max)] flex-wrap items-center justify-between gap-4 px-5 sm:gap-8 sm:px-8">
-				<a href={site.website} className="flex shrink-0 items-center gap-2.5">
+			<div className="mx-auto flex h-[72px] max-w-[var(--container-max)] items-center justify-between gap-4 px-5 sm:px-8">
+				<a className="flex shrink-0 items-center gap-2.5" href={site.website}>
 					<Image
-						src="/logo-mark.svg"
 						alt=""
-						width={34}
-						height={34}
 						className="size-[34px]"
+						height={34}
+						src="/logo-mark.svg"
+						width={34}
 					/>
 					<span className="font-display text-md font-semibold tracking-tight text-fg-primary">
 						Cheela Labs
 					</span>
 				</a>
 
-				<nav className="order-3 flex flex-wrap items-center gap-4 overflow-x-auto sm:order-none sm:gap-6">
+				{/* Seven links plus two actions do not fit until well past the tablet
+				    breakpoint, so the full bar only appears at lg. */}
+				<nav className="hidden items-center gap-6 lg:flex">
 					{NAV_ITEMS.map((item) => (
 						<a
-							key={item.label}
-							href={item.href}
 							className={
 								item.active
 									? "whitespace-nowrap text-sm font-semibold text-fg-primary"
 									: "whitespace-nowrap text-sm text-fg-secondary hover:text-fg-primary"
 							}
+							href={item.href}
+							key={item.label}
 						>
 							{item.label}
 						</a>
 					))}
 				</nav>
 
-				<div className="flex shrink-0 items-center gap-4">
+				<div className="hidden shrink-0 items-center gap-4 lg:flex">
 					<a
+						className="flex items-center text-fg-secondary hover:text-fg-primary"
 						href={site.npm}
 						title="npm"
-						className="flex items-center text-fg-secondary hover:text-fg-primary"
 					>
 						<span className="sr-only">npm</span>
-						<svg
-							width="20"
-							height="20"
-							viewBox="0 0 24 24"
-							fill="currentColor"
-							aria-hidden="true"
-						>
-							<path d="M1.5 6h21v12h-6v-9h-3v9h-3v-9H4.5v9h-3V6z" />
-						</svg>
+						<NpmIcon />
 					</a>
 					<a
-						href={site.dashboard}
 						className="inline-flex items-center rounded-md bg-accent px-[18px] py-2.5 text-sm font-medium text-fg-on-accent transition-transform duration-fast ease-out active:scale-[0.97]"
+						href={site.dashboard}
 					>
 						Get started
 					</a>
 				</div>
+
+				<button
+					aria-controls="mobile-nav"
+					aria-expanded={open}
+					aria-label={open ? "Close menu" : "Open menu"}
+					className="-mr-2 inline-flex size-10 shrink-0 items-center justify-center rounded-md text-fg-primary lg:hidden"
+					onClick={() => setOpen((value) => !value)}
+					type="button"
+				>
+					{open ? <X size={22} /> : <Menu size={22} />}
+				</button>
 			</div>
+
+			{open && (
+				<nav
+					className="max-h-[calc(100vh-72px)] overflow-y-auto border-t border-border-default bg-bg-page px-5 pb-6 pt-2 sm:px-8 lg:hidden"
+					id="mobile-nav"
+				>
+					<ul className="flex flex-col">
+						{NAV_ITEMS.map((item) => (
+							<li key={item.label}>
+								<a
+									className={
+										item.active
+											? "block border-b border-border-default py-3.5 text-md font-semibold text-fg-primary"
+											: "block border-b border-border-default py-3.5 text-md text-fg-secondary"
+									}
+									href={item.href}
+								>
+									{item.label}
+								</a>
+							</li>
+						))}
+					</ul>
+
+					<div className="mt-6 flex items-center gap-4">
+						<a
+							className="inline-flex flex-1 items-center justify-center rounded-md bg-accent px-[18px] py-3 text-sm font-medium text-fg-on-accent transition-transform duration-fast ease-out active:scale-[0.97]"
+							href={site.dashboard}
+						>
+							Get started
+						</a>
+						<a
+							className="inline-flex size-11 shrink-0 items-center justify-center rounded-md border border-border-default text-fg-secondary"
+							href={site.npm}
+							title="npm"
+						>
+							<span className="sr-only">npm</span>
+							<NpmIcon />
+						</a>
+					</div>
+				</nav>
+			)}
 		</header>
 	);
 }

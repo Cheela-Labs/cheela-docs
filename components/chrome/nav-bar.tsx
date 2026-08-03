@@ -9,7 +9,7 @@ const NAV_ITEMS = [
 	{ label: "Why Cheela", href: `${site.website}/why-cheela` },
 	{ label: "Docs", href: "/", active: true },
 	{ label: "Pricing", href: `${site.website}/pricing` },
-	{ label: "Blog", href: `${site.website}/blog` },
+	{ label: "Blog", href: site.blog },
 	{ label: "Changelog", href: `${site.website}/changelog` },
 	{ label: "About", href: `${site.website}/about` },
 	{ label: "Contact", href: `${site.website}/contact` },

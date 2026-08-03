@@ -182,14 +182,6 @@ npm install -D @cheela/cli`}</CodeBlock>
 							for another is rejected.
 						</>,
 					],
-					[
-						"CHEELA_API_URL",
-						"CLI",
-						<>
-							Optional. Overrides the control plane host. Defaults to{" "}
-							<Code>https://api.cheelalabs.com</Code>.
-						</>,
-					],
 				]}
 			/>
 

@@ -71,7 +71,7 @@ npm install -D @cheela/cli`}</CodeBlock>
 						"package.json",
 						"Dependencies on @cheela/cli, @cheela/runtime and @cheela/sdk, plus the three scripts above.",
 					],
-					[".env.example", "CHEELA_API_KEY, and CHEELA_API_URL as a comment."],
+					[".env.example", "CHEELA_API_KEY."],
 					[
 						".gitignore",
 						"Appends .env and .cheela/generate.cache.json if they are missing.",
@@ -219,14 +219,7 @@ npx cheela manifest pull --runtime rt_8f2a --out static/.well-known/agent-discov
 			</P>
 			<Table
 				headers={["Variable", "Used by", "Default"]}
-				rows={[
-					["CHEELA_API_KEY", "deploy, status", "— (required)"],
-					[
-						"CHEELA_API_URL",
-						"deploy, status, manifest pull",
-						"https://api.cheelalabs.com",
-					],
-				]}
+				rows={[["CHEELA_API_KEY", "deploy, status", "— (required)"]]}
 			/>
 			<P>
 				The project root is found by walking up from the working directory, so
@@ -250,8 +243,7 @@ npx cheela manifest pull --runtime rt_8f2a --out static/.well-known/agent-discov
 			</P>
 			<UL>
 				<LI>
-					<Strong>Unreachable control plane</Strong> — check{" "}
-					<Code>CHEELA_API_URL</Code> and your network.
+					<Strong>Unreachable control plane</Strong> — check your network.
 				</LI>
 				<LI>
 					<Strong>401 or 403</Strong> — <Code>CHEELA_API_KEY</Code> is invalid

@@ -184,12 +184,7 @@ Use hyphens instead, e.g. "catalog-search".`}</CodeBlock>
 							No <Code>Authorization: Bearer …</Code> header arrived.
 						</>,
 					],
-					[
-						"Could not reach the Cheela Control Plane",
-						<>
-							Network, or a stale <Code>CHEELA_API_URL</Code>.
-						</>,
-					],
+					["Could not reach the Cheela Control Plane", "Network."],
 				]}
 			/>
 			<Callout title="The plane rejection is intentionally vague" tone="note">

@@ -33,6 +33,7 @@ const TOC = [
 export default function IntroductionPage() {
 	return (
 		<DocPage
+			path="/"
 			eyebrow="Start"
 			lead="You describe what your product can do. Cheela runs the model, decides when to call you, and makes a signed HTTPS request to your endpoint. Your handler runs on your own infrastructure, with your own credentials."
 			title="Introduction"

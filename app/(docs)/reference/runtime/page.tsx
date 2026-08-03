@@ -38,6 +38,7 @@ const TOC = [
 export default function RuntimeReferencePage() {
 	return (
 		<DocPage
+			path="/reference/runtime"
 			eyebrow="Reference"
 			lead="Everything that runs on your infrastructure: the registry of capabilities, the handlers that verify an incoming Cheela request, and the HMAC primitive underneath them."
 			title="@cheela/runtime"

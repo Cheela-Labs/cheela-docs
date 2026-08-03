@@ -33,6 +33,7 @@ const TOC = [
 export default function CapabilitiesPage() {
 	return (
 		<DocPage
+			path="/concepts/capabilities"
 			eyebrow="Concepts"
 			lead="A capability is one thing your product can do, described precisely enough that a model can decide when to call it and what to pass."
 			title="Capabilities"

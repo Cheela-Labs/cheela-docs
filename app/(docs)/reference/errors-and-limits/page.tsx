@@ -36,6 +36,7 @@ const TOC = [
 export default function ErrorsAndLimitsPage() {
 	return (
 		<DocPage
+			path="/reference/errors-and-limits"
 			eyebrow="Reference"
 			lead="Every failure Cheela can report, and every ceiling it enforces."
 			title="Errors and limits"

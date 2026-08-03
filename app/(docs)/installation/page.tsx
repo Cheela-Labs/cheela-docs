@@ -32,6 +32,7 @@ const TOC = [
 export default function InstallationPage() {
 	return (
 		<DocPage
+			path="/installation"
 			eyebrow="Start"
 			lead="Cheela is a set of small packages rather than one framework. Install the two or three that match what you are building."
 			title="Installation"

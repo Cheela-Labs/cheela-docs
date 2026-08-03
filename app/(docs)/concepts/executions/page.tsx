@@ -36,6 +36,7 @@ const TOC = [
 export default function ExecutionsPage() {
 	return (
 		<DocPage
+			path="/concepts/executions"
 			eyebrow="Concepts"
 			lead="One execution is one agent loop: the model runs, calls capabilities, reads the results, and runs again until it has an answer. However many steps that takes, it bills as one."
 			title="Executions"

@@ -4,6 +4,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 import { site } from "@/lib/site";
+import { structuredData } from "@/lib/structured-data";
 
 const ranade = localFont({
 	src: "./fonts/Ranade-Variable.ttf",
@@ -49,6 +50,13 @@ export default function RootLayout({
 				className={`${ranade.variable} ${jetbrainsMono.variable} bg-bg-page text-fg-primary antialiased`}
 			>
 				{children}
+				{/* Emitted once, from the root. Per-page TechArticle and
+				    BreadcrumbList nodes reference these two by @id. */}
+				<script
+					// biome-ignore lint/security/noDangerouslySetInnerHtml: JSON-LD must be inlined
+					dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+					type="application/ld+json"
+				/>
 				<GoogleAnalytics />
 			</body>
 		</html>

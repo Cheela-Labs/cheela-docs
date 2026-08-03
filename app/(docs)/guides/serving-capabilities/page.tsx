@@ -33,6 +33,7 @@ const TOC = [
 export default function ServingCapabilitiesPage() {
 	return (
 		<DocPage
+			path="/guides/serving-capabilities"
 			eyebrow="Guides"
 			lead="Cheela never runs your capability code. When the agent loop needs a capability, it makes a signed HTTPS call to your endpoint, you execute it, and you return the result."
 			title="Serve capability calls"

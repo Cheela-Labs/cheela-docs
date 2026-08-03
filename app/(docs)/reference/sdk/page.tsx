@@ -33,6 +33,7 @@ const TOC = [
 export default function SdkReferencePage() {
 	return (
 		<DocPage
+			path="/reference/sdk"
 			eyebrow="Reference"
 			lead="The vocabulary every other package shares. @cheela/sdk holds no runtime behaviour beyond validation — it is types, two factories, and the naming rules the CLI and the control plane both enforce."
 			title="@cheela/sdk"

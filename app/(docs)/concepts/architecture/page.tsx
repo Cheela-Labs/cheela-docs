@@ -35,6 +35,7 @@ const TOC = [
 export default function ArchitecturePage() {
 	return (
 		<DocPage
+			path="/concepts/architecture"
 			eyebrow="Concepts"
 			lead="Cheela orchestrates. Your infrastructure executes. Almost everything surprising about the API follows from that one division."
 			title="Architecture"

@@ -36,6 +36,7 @@ const TOC = [
 export default function QuickstartPage() {
 	return (
 		<DocPage
+			path="/quickstart"
 			eyebrow="Start"
 			lead="By the end of this page a model will call code running on your machine. Budget about ten minutes, most of it waiting on npm."
 			title="Quickstart"

@@ -33,6 +33,7 @@ const TOC = [
 export default function EmbeddingChatPage() {
 	return (
 		<DocPage
+			path="/guides/embedding-chat"
 			eyebrow="Guides"
 			lead="Three ways to put a chat interface on a page, from a React component tree down to a single script tag. All three call the same endpoint with the same key."
 			title="Embed chat"

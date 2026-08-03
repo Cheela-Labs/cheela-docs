@@ -35,6 +35,7 @@ const TOC = [
 export default function ConfigurationPage() {
 	return (
 		<DocPage
+			path="/reference/configuration"
 			eyebrow="Reference"
 			lead="cheela.config.ts is evaluated through tsx at deploy time, after .env is loaded. defineConfig is a type helper with no hidden behaviour."
 			title="Configuration"

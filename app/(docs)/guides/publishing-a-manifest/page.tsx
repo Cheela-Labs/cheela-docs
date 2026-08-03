@@ -33,6 +33,7 @@ const TOC = [
 export default function PublishingAManifestPage() {
 	return (
 		<DocPage
+			path="/guides/publishing-a-manifest"
 			eyebrow="Guides"
 			lead="A manifest is a public document describing what your product can do and where to call it. Publish one and any agent that reads it can use your capabilities without touching your UI."
 			title="Publish a manifest"

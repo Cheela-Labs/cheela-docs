@@ -15,3 +15,20 @@ export const site = {
 	npm: "https://www.npmjs.com/package/@cheela/cli",
 	x: "https://x.com/CheelaLabs",
 } as const;
+
+/** Absolute URL on the canonical docs host. */
+export function siteUrl(pathname = "/"): string {
+	return new URL(pathname, site.docs).toString();
+}
+
+/**
+ * Stable JSON-LD node id: `organization` → `https://docs…/#organization`.
+ *
+ * Built through `new URL` rather than string concatenation. The marketing
+ * site's ids were once assembled by joining a base that ends in a slash,
+ * producing `…com//#organization`, so every reference written the obvious way
+ * pointed at a node that did not exist.
+ */
+export function nodeId(fragment: string): string {
+	return `${siteUrl("/")}#${fragment.replace(/^#/, "")}`;
+}

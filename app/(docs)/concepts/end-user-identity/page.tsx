@@ -34,6 +34,7 @@ const TOC = [
 export default function EndUserIdentityPage() {
 	return (
 		<DocPage
+			path="/concepts/end-user-identity"
 			eyebrow="Concepts"
 			lead="Cheela does not authenticate your users and does not try to. It carries an opaque credential from the caller to your handler, and your own code verifies it exactly as your REST API already does."
 			title="End-user identity"

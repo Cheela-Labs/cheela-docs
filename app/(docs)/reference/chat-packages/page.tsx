@@ -34,6 +34,7 @@ const TOC = [
 export default function ChatPackagesPage() {
 	return (
 		<DocPage
+			path="/reference/chat-packages"
 			eyebrow="Reference"
 			lead="Three packages over one conversation store. Pick the layer that matches how much of the UI you want to own."
 			title="Chat packages"

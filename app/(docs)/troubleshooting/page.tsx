@@ -38,6 +38,7 @@ const TOC = [
 export default function TroubleshootingPage() {
 	return (
 		<DocPage
+			path="/troubleshooting"
 			eyebrow="Help"
 			lead="Ordered roughly by how often each one comes up. Most have a symptom that points somewhere other than the cause, so the misleading reading is called out too."
 			title="Troubleshooting"

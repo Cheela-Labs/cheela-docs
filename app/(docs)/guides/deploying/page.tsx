@@ -33,6 +33,7 @@ const TOC = [
 export default function DeployingPage() {
 	return (
 		<DocPage
+			path="/guides/deploying"
 			eyebrow="Guides"
 			lead="`cheela deploy` compiles your capability set into a manifest, writes four artifacts alongside it, and pushes the result to the control plane. It stops at the first validation failure, before anything is written or sent."
 			title="Deploy a runtime"

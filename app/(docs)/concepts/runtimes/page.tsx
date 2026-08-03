@@ -24,6 +24,7 @@ const TOC = [
 export default function RuntimesPage() {
 	return (
 		<DocPage
+			path="/concepts/runtimes"
 			eyebrow="Concepts"
 			lead="A runtime is the identity a capability set belongs to. It holds two API keys, a signing secret, an endpoint, and a history of deployments."
 			title="Runtimes"

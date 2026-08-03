@@ -34,6 +34,7 @@ const TOC = [
 export default function CliReferencePage() {
 	return (
 		<DocPage
+			path="/reference/cli"
 			eyebrow="Reference"
 			lead="Five commands. The CLI has no argument-parsing dependency, so flags are matched exactly as documented — an unrecognised argument prints usage rather than being ignored."
 			title="CLI"

@@ -39,6 +39,7 @@ const TOC = [
 export default function HttpApiPage() {
 	return (
 		<DocPage
+			path="/reference/http-api"
 			eyebrow="Reference"
 			lead="Four auth planes, and which one an endpoint belongs to is the most important thing about it. A credential valid on one plane is refused on the others."
 			title="HTTP API"

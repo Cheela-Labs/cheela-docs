@@ -1,4 +1,4 @@
-import { nodeId, site, siteUrl } from "./site";
+import { nodeId, ORGANIZATION_ID, site, siteUrl } from "./site";
 
 /**
  * The docs site's entity graph, emitted once from the root layout.
@@ -16,7 +16,7 @@ export const structuredData = [
 	{
 		"@context": "https://schema.org",
 		"@type": "Organization",
-		"@id": nodeId("organization"),
+		"@id": ORGANIZATION_ID,
 
 		name: "Cheela Labs",
 		// The marketing site, deliberately — that is the organization's home.
@@ -38,7 +38,7 @@ export const structuredData = [
 			"Documentation for Cheela — capabilities, runtimes, the HTTP API, and the CLI.",
 		inLanguage: "en",
 
-		publisher: { "@id": nodeId("organization") },
+		publisher: { "@id": ORGANIZATION_ID },
 	},
 ];
 
@@ -81,8 +81,8 @@ export function articleSchema(options: {
 		articleSection: options.section,
 
 		isPartOf: { "@id": nodeId("website") },
-		publisher: { "@id": nodeId("organization") },
-		author: { "@id": nodeId("organization") },
+		publisher: { "@id": ORGANIZATION_ID },
+		author: { "@id": ORGANIZATION_ID },
 	};
 }
 

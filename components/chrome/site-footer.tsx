@@ -25,9 +25,10 @@ const COLUMNS: FooterColumn[] = [
 	{
 		title: "RESOURCES",
 		links: [
-			{ label: "API reference", href: "/" },
-			{ label: "CLI", href: "/" },
-			{ label: "SDK", href: "/" },
+			{ label: "Quickstart", href: "/quickstart" },
+			{ label: "HTTP API", href: "/reference/http-api" },
+			{ label: "CLI", href: "/reference/cli" },
+			{ label: "SDK", href: "/reference/sdk" },
 			{ label: "npm", href: site.npm },
 		],
 	},

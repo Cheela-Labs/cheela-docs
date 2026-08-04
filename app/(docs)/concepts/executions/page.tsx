@@ -67,7 +67,8 @@ export default function ExecutionsPage() {
 					tools.
 				</LI>
 				<LI>
-					Append the model&rsquo;s message to the transcript and to the trace.
+					Append the model&rsquo;s message to the transcript, and its shape to
+					the trace.
 				</LI>
 				<LI>
 					If it contains no tool calls, stop — that message is the answer.
@@ -228,11 +229,27 @@ interface Message {
 
 			<H2 id="traces">Traces</H2>
 			<P>
-				Every execution is recorded: the full message list, every capability
-				call, token counts, duration, and any error. List them with{" "}
-				<Code>GET /v1/executions</Code>, fetch one with{" "}
+				Every execution is recorded: every capability call, token counts,
+				duration, any error, and the <em>shape</em> of the conversation. List
+				them with <Code>GET /v1/executions</Code>, fetch one with{" "}
 				<Code>GET /v1/executions/:executionId</Code>.
 			</P>
+			<Callout title="What a trace does not contain" tone="note">
+				<p>
+					Message content is never stored. A trace holds{" "}
+					<Code>messageShape</Code> instead — one entry per turn carrying its{" "}
+					<Code>role</Code> and the <Code>type</Code> of each part. You can see
+					that a run went user &rarr; assistant &rarr; tool; you cannot read
+					what was said, and neither can we.
+				</p>
+				<p>
+					Capability <Code>input</Code> and <Code>output</Code> payloads are the
+					exception — those are stored in full, because they are how you debug a
+					capability being called with the wrong arguments. Tool arguments are
+					often the user&rsquo;s own words rephrased, so treat a capability
+					signature as a decision about what gets retained.
+				</p>
+			</Callout>
 			<P>
 				Your handler receives the same <Code>executionId</Code> Cheela recorded,
 				so logging it joins your own logs to the trace:

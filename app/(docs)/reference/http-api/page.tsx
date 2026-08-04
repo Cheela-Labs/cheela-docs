@@ -395,8 +395,7 @@ export default function HttpApiPage() {
       "durationMs": 3140,
       "capabilityCalls": 2,
       "startedAt": "...",
-      "completedAt": "...",
-      "preview": "Where is order 8812?"
+      "completedAt": "..."
     }
   ]
 }`}</CodeBlock>
@@ -407,9 +406,21 @@ export default function HttpApiPage() {
 				method="GET"
 				path="/v1/executions/:executionId"
 			/>
-			<P>
-				The full trace: every message, token counts, and each capability call.
-			</P>
+			<P>The trace: turn shapes, token counts, and each capability call.</P>
+			<Callout title="Message content is not stored" tone="note">
+				<p>
+					Cheela does not persist what anybody wrote. In place of the
+					conversation, a trace holds <Code>messageShape</Code> &mdash; one
+					entry per turn with its <Code>role</Code> and the <Code>type</Code> of
+					each part, and nothing else. It is enough to see that a run went user
+					&rarr; assistant &rarr; tool, and not enough to read it back.
+				</p>
+				<p>
+					Capability <Code>input</Code> and <Code>output</Code> payloads{" "}
+					<em>are</em> stored, and tool arguments often carry the user&rsquo;s
+					text. Keep that in mind when deciding what a capability accepts.
+				</p>
+			</Callout>
 			<Callout title="404, not 403, on someone else's execution" tone="note">
 				<p>
 					A 403 would confirm the id exists and turn this route into an

@@ -94,9 +94,9 @@ export default defineConfig({
 						with the deployment.
 					</p>
 					<p>
-						Optional here only because the dashboard&rsquo;s endpoint card is
-						the alternative. A runtime with neither cannot receive capability
-						requests.
+						Optional here only because passing <Code>endpoint</Code> to{" "}
+						<Code>POST /v1/runtimes</Code> at registration is the alternative. A
+						runtime with neither cannot receive capability requests.
 					</p>
 				</Property>
 			</PropertyList>

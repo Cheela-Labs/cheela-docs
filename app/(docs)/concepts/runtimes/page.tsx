@@ -140,13 +140,13 @@ export default function RuntimesPage() {
   endpoint: "https://app.example.com/cheela/execute",
 });`}</CodeBlock>
 			<P>
-				Or on the runtime&rsquo;s endpoint card in the dashboard, or over the
-				API:
+				Or at registration, if you are creating the runtime over the API rather
+				than in the dashboard:
 			</P>
-			<CodeBlock label="Terminal">{`curl -X PUT https://api.cheelalabs.com/v1/runtimes/$RUNTIME_ID/endpoint \\
+			<CodeBlock label="Terminal">{`curl -X POST https://api.cheelalabs.com/v1/runtimes \\
   -H "Authorization: Bearer $API_KEY" \\
   -H "Content-Type: application/json" \\
-  -d '{ "endpoint": "https://app.example.com/cheela/execute" }'`}</CodeBlock>
+  -d '{ "name": "storefront", "endpoint": "https://app.example.com/cheela/execute" }'`}</CodeBlock>
 
 			<P>
 				It must be <Code>https://</Code>. The request signature protects

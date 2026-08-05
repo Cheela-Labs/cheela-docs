@@ -325,14 +325,6 @@ export default function HttpApiPage() {
 
 			<Endpoint
 				auth="owner"
-				id="put-endpoint"
-				method="PUT"
-				path="/v1/runtimes/:runtimeId/endpoint"
-			/>
-			<CodeBlock label="Request">{`{ "endpoint": "https://app.example.com/cheela/execute" }`}</CodeBlock>
-
-			<Endpoint
-				auth="owner"
 				id="put-origins"
 				method="PUT"
 				path="/v1/runtimes/:runtimeId/allowed-origins"

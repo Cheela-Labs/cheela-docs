@@ -227,6 +227,28 @@ export default function Page() {
 				<Code>auto</Code>; the resolved value lands on a{" "}
 				<Code>data-cheela-theme</Code> attribute you can target.
 			</P>
+			<P>
+				The custom element is different: its Shadow DOM is what stops a host
+				page&rsquo;s CSS leaking in, which also stops yours reaching the widget.
+				Two supported ways in, both from your own stylesheet — the{" "}
+				<Code>--cheela-*</Code> custom properties, and <Code>::part()</Code> for
+				anything a variable cannot express.
+			</P>
+			<CodeBlock label="CSS">{`cheela-chat {
+  --cheela-color-accent: #6d28d9;
+}
+
+cheela-chat::part(message--user) { border-radius: 4px }
+cheela-chat::part(action--primary) { background: #111; color: #fff }`}</CodeBlock>
+			<P>
+				Parts: <Code>container</Code>, <Code>messages</Code>,{" "}
+				<Code>message</Code>, <Code>message--user</Code>,{" "}
+				<Code>message--assistant</Code>, <Code>empty</Code>,{" "}
+				<Code>actions</Code>, <Code>action</Code>, <Code>action--primary</Code>,{" "}
+				<Code>action-label</Code>, <Code>action-description</Code>,{" "}
+				<Code>error</Code>, <Code>form</Code>, <Code>input</Code>,{" "}
+				<Code>send</Code>.
+			</P>
 
 			<H2 id="headless">Building your own UI</H2>
 			<P>
@@ -248,6 +270,37 @@ function MyChat() {
 
 const client = new ExecutionClient({ apiKey: "ch_pk_..." });
 const store = new ConversationStore();`}</CodeBlock>
+			<P>
+				Outside React, <Code>@cheela/web-component/headless</Code> gives you the
+				same conversation plus the DOM builders, and registers no custom
+				elements — importing a controller should not silently define three tags
+				on your page.
+			</P>
+			<CodeBlock label="TypeScript">{`import {
+  createChatController,
+  renderMessage,
+} from "@cheela/web-component/headless";
+
+const chat = createChatController({ apiKey: "ch_pk_..." });
+
+chat.subscribe((state) => {
+  list.replaceChildren(...state.messages.map(renderMessage).filter(Boolean));
+});
+
+chat.sendMessage("hello");`}</CodeBlock>
+			<P>
+				Or keep our parts and arrange them yourself.{" "}
+				<Code>{"<cheela-chat-messages>"}</Code> and{" "}
+				<Code>{"<cheela-chat-input>"}</Code> find each other by{" "}
+				<Code>session</Code> rather than by nesting, so they can sit anywhere in
+				your layout and still be one conversation.
+			</P>
+			<CodeBlock label="HTML">{`<div class="my-layout">
+  <cheela-chat-messages session="support" api-key="ch_pk_..."></cheela-chat-messages>
+
+  <!-- your own composer, your own markup -->
+  <cheela-chat-input session="support" api-key="ch_pk_..."></cheela-chat-input>
+</div>`}</CodeBlock>
 
 			<H2 id="origins">Lock it to your domain</H2>
 			<P>

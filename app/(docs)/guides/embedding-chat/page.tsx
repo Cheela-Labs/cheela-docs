@@ -142,6 +142,50 @@ export default function Page() {
 				— plain HTML, served as-is.
 			</P>
 
+			<H2 id="actions">Buttons, not links in prose</H2>
+			<P>
+				A capability that creates a checkout returns a URL. Left to the model,
+				that URL reaches the shopper only if it chooses to repeat it — and
+				models mangle long signed URLs. Return an action instead and the widget
+				renders a button, every time, without the model involved in the
+				presentation.
+			</P>
+			<CodeBlock filename="capability handler">{`return {
+  orderId: order.id,
+  total: order.amount,
+  cheela: {
+    actions: [
+      {
+        type: "link",
+        label: \`Pay ₹\${order.amount / 100}\`,
+        url: order.checkoutUrl,
+        style: "primary",
+      },
+    ],
+  },
+};`}</CodeBlock>
+			<P>
+				Everything outside <Code>cheela</Code> is yours and reaches the model
+				unchanged, so the assistant can still say what it did. The model decides{" "}
+				<em>whether</em> to call the capability; the UI decides how the result
+				looks.
+			</P>
+			<P>
+				This is how payment works on Cheela. Your runtime creates the checkout
+				with your own payment provider and your own key, and returns the link.
+				No card details ever pass through Cheela, the model, or the
+				conversation.
+			</P>
+			<Callout title="Only https:// links render" tone="note">
+				<p>
+					The output is written by your runtime and rendered inside your
+					visitor&rsquo;s browser, so a <Code>javascript:</Code> URL there would
+					be stored XSS on your own domain. Anything that is not{" "}
+					<Code>https:</Code> is dropped, along with malformed entries, and at
+					most five actions render per result.
+				</p>
+			</Callout>
+
 			<H2 id="signed-in">Signed-in visitors</H2>
 			<P>
 				If any capability is marked <Code>requiresEndUser</Code>, the widget has

@@ -189,6 +189,45 @@ export default function HttpApiPage() {
 			</Callout>
 
 			<Endpoint
+				auth="ch_pk_"
+				id="post-runtime-capability"
+				method="POST"
+				path="/v1/runtime/capability"
+			/>
+			<P>
+				One capability, no model. What the widget polls while waiting on a{" "}
+				<Code>pending</Code> spec — a checkout finishing on your own payment
+				page. Same key, origin allowlist and rate limit as{" "}
+				<Code>/v1/runtime/execute</Code>, and the capability is looked up on the
+				authenticated runtime rather than taken from the body.
+			</P>
+			<CodeBlock label="Request">{`{
+  "capability": "order-status",
+  "input": { "orderId": "ord_123" },
+  "endUserToken": "session_abc"
+}`}</CodeBlock>
+			<CodeBlock label="200">{`{ "executionId": "exec_...", "output": { "status": "paid", "cheela": { "settled": true } }, "durationMs": 41.2 }`}</CodeBlock>
+			<UL>
+				<LI>
+					Metered as one capability call with zero tokens — no provider runs,
+					but the call is real load on your endpoint.
+				</LI>
+				<LI>
+					Unlike the broker, this spends the ordinary execution allowance rather
+					than the anonymous sub-share, so your own widget cannot be starved by
+					third-party traffic against your published manifest.
+				</LI>
+				<LI>
+					<Strong>404</Strong> names the capability, because the caller already
+					holds this runtime&rsquo;s key and there is no enumeration to prevent.
+				</LI>
+				<LI>
+					A capability failure is <Strong>200</Strong> with an{" "}
+					<Code>error</Code> field, as with execute.
+				</LI>
+			</UL>
+
+			<Endpoint
 				auth="owner"
 				id="post-executions"
 				method="POST"

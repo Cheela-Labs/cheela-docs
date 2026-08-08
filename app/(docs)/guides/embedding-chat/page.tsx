@@ -6,9 +6,11 @@ import {
 	Code,
 	H2,
 	H3,
+	LI,
 	P,
 	Strong,
 	Table,
+	UL,
 } from "@/components/docs/content";
 import { DocPage } from "@/components/docs/doc-page";
 
@@ -24,6 +26,8 @@ const TOC = [
 	{ id: "react", title: "React" },
 	{ id: "custom-element", title: "Custom element" },
 	{ id: "script", title: "One script tag" },
+	{ id: "actions", title: "Buttons, not links in prose" },
+	{ id: "pending", title: "Waiting for the payment to land" },
 	{ id: "signed-in", title: "Signed-in visitors" },
 	{ id: "styling", title: "Styling" },
 	{ id: "headless", title: "Building your own UI" },
@@ -183,6 +187,81 @@ export default function Page() {
 					be stored XSS on your own domain. Anything that is not{" "}
 					<Code>https:</Code> is dropped, along with malformed entries, and at
 					most five actions render per result.
+				</p>
+			</Callout>
+
+			<H2 id="pending">Waiting for the payment to land</H2>
+			<P>
+				The button sends the shopper to your checkout, and until they come back
+				the conversation has nothing to say. Add a <Code>pending</Code> spec and
+				the widget watches for you: it re-calls a capability of yours until that
+				capability reports the work is finished, then hands the result to the
+				model so it can carry on.
+			</P>
+			<CodeBlock filename="capability handler">{`return {
+  orderId: order.id,
+  cheela: {
+    actions: [
+      { type: "link", label: \`Pay ₹\${order.amount / 100}\`, url: order.checkoutUrl },
+    ],
+    pending: {
+      capability: "order-status",
+      input: { orderId: order.id },
+      intervalMs: 3000,
+      timeoutMs: 900000,
+    },
+  },
+};`}</CodeBlock>
+			<P>
+				The capability being watched answers in your own vocabulary and says
+				outright whether it is done:
+			</P>
+			<CodeBlock filename="order-status handler">{`const order = await db.orders.findById(input.orderId);
+
+return {
+  status: order.status,
+  amount: order.amount,
+  cheela: { settled: order.status === "paid" },
+};`}</CodeBlock>
+			<P>
+				That is the whole integration. There is no webhook to register with
+				Cheela, no payment credential to hand over, no change to your checkout
+				page or its redirect URLs, and no payment SDK in the shopper&rsquo;s
+				browser. You already have a row that flips when money arrives; this
+				reads it.
+			</P>
+			<P>
+				<Code>settled</Code> is your word, never ours — we do not inspect{" "}
+				<Code>status</Code> or try to guess which of your states means done.
+				That is also why this is not a payment feature: the same spec waits on a
+				KYC check, a human approval, or any slow job.
+			</P>
+			<UL>
+				<LI>
+					Polling happens in the visitor&rsquo;s browser and wakes as soon as
+					they return to the tab, so coming back from checkout resolves at once
+					rather than waiting out the interval.
+				</LI>
+				<LI>
+					<Code>intervalMs</Code> has a floor of one second and{" "}
+					<Code>timeoutMs</Code> a ceiling of fifteen minutes. Each poll is
+					metered as one capability call with zero tokens.
+				</LI>
+				<LI>
+					A poll that fails is retried until the deadline; a visitor who types
+					something abandons the wait.
+				</LI>
+				<LI>
+					On timeout the model is told the work never settled, so it can offer
+					to check again instead of going silent.
+				</LI>
+			</UL>
+			<Callout title="The result reaches the model as a tool call" tone="note">
+				<p>
+					Not as a message from the visitor. The poll really did call your
+					capability, so it enters the transcript as an ordinary tool call and
+					result — the model reads it as something it observed, not as an
+					unverified claim that someone paid.
 				</p>
 			</Callout>
 

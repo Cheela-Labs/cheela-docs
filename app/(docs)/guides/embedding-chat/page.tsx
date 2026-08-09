@@ -27,6 +27,7 @@ const TOC = [
 	{ id: "custom-element", title: "Custom element" },
 	{ id: "script", title: "One script tag" },
 	{ id: "actions", title: "Buttons, not links in prose" },
+	{ id: "replies", title: "Letting the visitor answer" },
 	{ id: "cards", title: "Showing products" },
 	{ id: "pending", title: "Waiting for the payment to land" },
 	{ id: "signed-in", title: "Signed-in visitors" },
@@ -188,6 +189,54 @@ export default function Page() {
 					be stored XSS on your own domain. Anything that is not{" "}
 					<Code>https:</Code> is dropped, along with malformed entries, and at
 					most five actions render per result.
+				</p>
+			</Callout>
+
+			<H2 id="replies">Letting the visitor answer</H2>
+			<P>
+				A <Code>link</Code> action sends someone out of the conversation. A{" "}
+				<Code>reply</Code> action keeps them in it. Pressing one submits a turn
+				on their behalf, exactly as if they had typed it — so a capability can
+				offer the four sizes it actually has in stock instead of hoping the
+				model recognises &ldquo;the 42 one&rdquo; in free text.
+			</P>
+			<CodeBlock filename="capability handler">{`return {
+  orderId: order.id,
+  cheela: {
+    actions: [
+      {
+        type: "reply",
+        label: "Yes, cancel it",
+        value: \`cancel order \${order.id}\`,
+        style: "primary",
+      },
+      { type: "reply", label: "No, keep it" },
+      { type: "link", label: "View order", url: order.url },
+    ],
+  },
+};`}</CodeBlock>
+			<P>
+				<Code>label</Code> is what the visitor reads; <Code>value</Code> is what
+				the model receives. Splitting them is what lets a button read{" "}
+				<Code>Yes, cancel it</Code> while the turn says{" "}
+				<Code>cancel order ord_1042</Code> — unambiguous on its own, with no
+				dependency on what the button happened to sit underneath. Leave{" "}
+				<Code>value</Code> out and the label is used, which is usually what you
+				want for a plain <Code>No, keep it</Code>.
+			</P>
+			<P>
+				Both kinds live in the same <Code>actions</Code> array and render in the
+				order you return them, so one result can offer a choice and a way out of
+				it at the same time. Replies count against the same limit of five.
+			</P>
+			<Callout title="A reply is billed like anything else typed" tone="note">
+				<p>
+					<Code>value</Code> is submitted verbatim as the next turn, so it
+					becomes input tokens you pay for. Anything longer than 512 characters
+					is dropped rather than shortened — half of{" "}
+					<Code>cancel order ord_1042</Code> is a different instruction. A{" "}
+					<Code>value</Code> that is present but is not a string is refused for
+					the same reason, rather than quietly falling back to the label.
 				</p>
 			</Callout>
 
@@ -364,11 +413,16 @@ cheela-chat::part(action--primary) { background: #111; color: #fff }`}</CodeBloc
 			<P>
 				Parts: <Code>container</Code>, <Code>messages</Code>,{" "}
 				<Code>message</Code>, <Code>message--user</Code>,{" "}
-				<Code>message--assistant</Code>, <Code>empty</Code>,{" "}
-				<Code>actions</Code>, <Code>action</Code>, <Code>action--primary</Code>,{" "}
+				<Code>message--assistant</Code>, <Code>message--system</Code>,{" "}
+				<Code>message--cards</Code>, <Code>empty</Code>, <Code>actions</Code>,{" "}
+				<Code>action</Code>, <Code>action--primary</Code>,{" "}
+				<Code>action--secondary</Code>, <Code>action--reply</Code>,{" "}
 				<Code>action-label</Code>, <Code>action-description</Code>,{" "}
-				<Code>error</Code>, <Code>form</Code>, <Code>input</Code>,{" "}
-				<Code>send</Code>.
+				<Code>cards</Code>, <Code>card</Code>, <Code>card--link</Code>,{" "}
+				<Code>card-media</Code>, <Code>card-image</Code>, <Code>card-body</Code>
+				, <Code>card-title</Code>, <Code>card-price</Code>,{" "}
+				<Code>card-description</Code>, <Code>error</Code>, <Code>form</Code>,{" "}
+				<Code>input</Code>, <Code>send</Code>.
 			</P>
 
 			<H2 id="headless">Building your own UI</H2>
@@ -405,10 +459,25 @@ const store = new ConversationStore();`}</CodeBlock>
 const chat = createChatController({ apiKey: "ch_pk_..." });
 
 chat.subscribe((state) => {
-  list.replaceChildren(...state.messages.map(renderMessage).filter(Boolean));
+  const bubbles = state.messages
+    // Pass the handler through, or reply buttons are left out.
+    .map((message) => renderMessage(message, {
+      onReply: (value) => chat.sendMessage(value),
+      disabled: state.status === "submitting",
+    }))
+    .filter(Boolean);
+
+  list.replaceChildren(...bubbles);
 });
 
 chat.sendMessage("hello");`}</CodeBlock>
+			<P>
+				Reply buttons need somewhere to send their answer, so{" "}
+				<Code>renderMessage</Code> and <Code>createMessageList</Code> take a
+				handler. Leave it out and replies are dropped rather than rendered dead
+				— links beside them still render, so a missing handler never costs you
+				the checkout button.
+			</P>
 			<P>
 				Or keep our parts and arrange them yourself.{" "}
 				<Code>{"<cheela-chat-messages>"}</Code> and{" "}

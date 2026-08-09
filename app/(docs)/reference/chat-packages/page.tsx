@@ -162,8 +162,17 @@ export default function ChatPackagesPage() {
 			<P>
 				Exported so you can rebuild the layout without rebuilding the behaviour:{" "}
 				<Code>MessageList</Code>, <Code>MessageBubble</Code>,{" "}
-				<Code>ChatInput</Code>, <Code>Markdown</Code>, <Code>Spinner</Code>,
-				plus <Code>cn</Code> for class merging.
+				<Code>MessageActions</Code>, <Code>ChatInput</Code>,{" "}
+				<Code>Markdown</Code>, <Code>Spinner</Code>, plus <Code>cn</Code> for
+				class merging.
+			</P>
+			<P>
+				The first three take an optional <Code>onReply</Code>, which is what
+				makes a capability&rsquo;s reply buttons live — <Code>Chat</Code> wires
+				it to <Code>sendMessage</Code> for you. Rendering one of them yourself
+				without a handler drops reply actions rather than rendering them dead;
+				links are unaffected. A <Code>disabled</Code> prop refuses input while a
+				turn is in flight, matching the composer.
 			</P>
 
 			<H2 id="hooks">Hooks</H2>

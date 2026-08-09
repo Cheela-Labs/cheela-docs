@@ -27,6 +27,7 @@ const TOC = [
 	{ id: "custom-element", title: "Custom element" },
 	{ id: "script", title: "One script tag" },
 	{ id: "actions", title: "Buttons, not links in prose" },
+	{ id: "cards", title: "Showing products" },
 	{ id: "pending", title: "Waiting for the payment to land" },
 	{ id: "signed-in", title: "Signed-in visitors" },
 	{ id: "styling", title: "Styling" },
@@ -187,6 +188,47 @@ export default function Page() {
 					be stored XSS on your own domain. Anything that is not{" "}
 					<Code>https:</Code> is dropped, along with malformed entries, and at
 					most five actions render per result.
+				</p>
+			</Callout>
+
+			<H2 id="cards">Showing products</H2>
+			<P>
+				The same argument, for things people look at before they buy them. A
+				capability that searches your catalogue returns products, and left to
+				the model the shopper gets a paragraph about them: no picture, and
+				prices retyped from memory. Return <Code>cards</Code> and the widget
+				renders them.
+			</P>
+			<CodeBlock filename="capability handler">{`return {
+  queryId: results.id,
+  cheela: {
+    cards: results.items.map((item) => ({
+      type: "product",
+      title: item.name,
+      price: \`₹\${item.price / 100}\`,
+      description: item.summary,
+      image: { url: item.imageUrl, alt: item.imageAlt },
+      url: item.pageUrl,
+    })),
+    actions: [
+      { type: "link", label: "See all", url: results.allUrl },
+    ],
+  },
+};`}</CodeBlock>
+			<P>
+				Only <Code>type</Code> and <Code>title</Code> are required — a card with
+				no picture, price or link still renders. <Code>price</Code> is a string
+				you have already formatted, because your runtime knows the currency and
+				the locale and the widget knows neither.
+			</P>
+			<Callout title="Cards and actions travel together" tone="note">
+				<p>
+					One result can return both: a shortlist of cards and a button to see
+					the rest. Image and link URLs get the same <Code>https:</Code>
+					-only treatment as actions, and the damage from a bad one is kept as
+					small as it can be — a rejected image costs the card its picture, not
+					the card, and a rejected card costs you that card, not the reply. At
+					most six cards render per result.
 				</p>
 			</Callout>
 

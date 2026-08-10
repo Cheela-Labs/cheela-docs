@@ -218,11 +218,15 @@ input: z.object({ userId: z.string(), limit: z.number() }),`}</CodeBlock>
 				forget is the one you no longer have to write.
 			</P>
 			<P>
-				A complete working example lives in{" "}
-				<A href="https://github.com/Cheela-Labs/platform/tree/main/examples/signed-endpoint-nextjs">
-					examples/signed-endpoint-nextjs
+				A complete working example lives in the demo storefront's{" "}
+				<A href="https://github.com/Cheela-Labs/demo-shop/blob/main/server/.cheela/capabilities.ts">
+					capability set
 				</A>
-				.
+				: every capability that touches an order sets{" "}
+				<Code>requiresEndUser</Code> and resolves the token through the same
+				session table the REST API uses, which is what stops a capability and{" "}
+				<Code>GET /api/orders</Code> disagreeing about who someone is. You can
+				use it at <A href="https://demo-store.cheelalabs.com">demo-store</A>.
 			</P>
 		</DocPage>
 	);

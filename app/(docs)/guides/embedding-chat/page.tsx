@@ -141,11 +141,15 @@ export default function Page() {
   });
 </script>`}</CodeBlock>
 			<P>
-				A working page is in{" "}
-				<A href="https://github.com/Cheela-Labs/platform/tree/main/examples/web-component-static">
-					examples/web-component-static
-				</A>
-				— plain HTML, served as-is.
+				A live one is running at{" "}
+				<A href="https://demo-store.cheelalabs.com">demo-store</A>. Note that
+				its panel does <em>not</em> use the snippet above:{" "}
+				<Code>&lt;cheela-chat&gt;</Code> renders into a shadow root with its own
+				styling, so the storefront imports{" "}
+				<Code>@cheela/web-component/headless</Code> instead and draws its own
+				surface against that state. Reach for the script tag when you want the
+				chat to look like Cheela's, and the headless entry point when it has to
+				look like yours.
 			</P>
 
 			<H2 id="actions">Buttons, not links in prose</H2>

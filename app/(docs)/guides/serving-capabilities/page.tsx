@@ -277,13 +277,14 @@ export const POST = createCheelaHandler({
 				drive the handler in-process, not for a live runtime.
 			</P>
 			<P>
-				A complete project is in{" "}
-				<A href="https://github.com/Cheela-Labs/platform/tree/main/examples/signed-endpoint-nextjs">
-					examples/signed-endpoint-nextjs
-				</A>
-				. See also{" "}
-				<A href="/reference/runtime">the @cheela/runtime reference</A> for every
-				option.
+				A complete project is the{" "}
+				<A href="https://github.com/Cheela-Labs/demo-shop">demo storefront</A> —
+				its capabilities call the same repository layer the REST API does, so an
+				agent and a human get identical behaviour. It keeps a{" "}
+				<Code>without-cheela</Code> branch, so diffing that against{" "}
+				<Code>main</Code> shows exactly what serving capabilities added. See
+				also <A href="/reference/runtime">the @cheela/runtime reference</A> for
+				every option.
 			</P>
 		</DocPage>
 	);

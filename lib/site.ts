@@ -10,6 +10,8 @@ export const site = {
 	website: "https://www.cheelalabs.com",
 	/** Its own host — the blog is no longer a section of the marketing site. */
 	blog: "https://blogs.cheelalabs.com",
+	/** The demo catalogue. The demos themselves are hosted elsewhere. */
+	demos: "https://demos.cheelalabs.com",
 	dashboard: "https://dashboard.cheelalabs.com",
 	github: "https://github.com/Cheela-Labs/platform",
 	npm: "https://www.npmjs.com/package/@cheela/cli",

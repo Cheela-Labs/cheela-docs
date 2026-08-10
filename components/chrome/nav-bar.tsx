@@ -8,6 +8,7 @@ import { site } from "@/lib/site";
 const NAV_ITEMS = [
 	{ label: "Why Cheela", href: `${site.website}/why-cheela` },
 	{ label: "Docs", href: "/", active: true },
+	{ label: "Demos", href: site.demos },
 	{ label: "Pricing", href: `${site.website}/pricing` },
 	{ label: "Blog", href: site.blog },
 	{ label: "Changelog", href: `${site.website}/changelog` },
@@ -59,7 +60,7 @@ export function NavBar() {
 					</span>
 				</a>
 
-				{/* Seven links plus two actions do not fit until well past the tablet
+				{/* Eight links plus two actions do not fit until well past the tablet
 				    breakpoint, so the full bar only appears at lg. */}
 				<nav className="hidden items-center gap-6 lg:flex">
 					{NAV_ITEMS.map((item) => (

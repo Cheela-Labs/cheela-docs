@@ -226,7 +226,7 @@ input: z.object({ userId: z.string(), limit: z.number() }),`}</CodeBlock>
 				<Code>requiresEndUser</Code> and resolves the token through the same
 				session table the REST API uses, which is what stops a capability and{" "}
 				<Code>GET /api/orders</Code> disagreeing about who someone is. You can
-				use it at <A href="https://demo-store.cheelalabs.com">demo-store</A>.
+				use it at <A href="https://demo-shop.cheelalabs.com">demo-shop</A>.
 			</P>
 		</DocPage>
 	);

@@ -142,8 +142,8 @@ export default function Page() {
 </script>`}</CodeBlock>
 			<P>
 				A live one is running at{" "}
-				<A href="https://demo-store.cheelalabs.com">demo-store</A>. Note that
-				its panel does <em>not</em> use the snippet above:{" "}
+				<A href="https://demo-shop.cheelalabs.com">demo-shop</A>. Note that its
+				panel does <em>not</em> use the snippet above:{" "}
 				<Code>&lt;cheela-chat&gt;</Code> renders into a shadow root with its own
 				styling, so the storefront imports{" "}
 				<Code>@cheela/web-component/headless</Code> instead and draws its own

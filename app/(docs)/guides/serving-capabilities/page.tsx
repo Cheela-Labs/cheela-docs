@@ -21,6 +21,7 @@ export const metadata: Metadata = {
 
 const TOC = [
 	{ id: "job", title: "What the endpoint does" },
+	{ id: "two-doors", title: "Two doors" },
 	{ id: "web-standard", title: "Next.js, Hono, Bun, Deno, Workers" },
 	{ id: "express", title: "Express" },
 	{ id: "manual", title: "Verifying by hand" },
@@ -52,6 +53,57 @@ export default function ServingCapabilitiesPage() {
 				was issued for this runtime, that the timestamp is inside the tolerance
 				window, that the nonce has not been seen before, and that the HMAC
 				matches in constant time. Only then does it call your capability.
+			</P>
+
+			<H2 id="two-doors">Two doors</H2>
+			<P>
+				Everything above describes the <strong>signed</strong> endpoint, which
+				is the path Cheela itself takes when it runs the agent loop for your
+				chat widget. There is a second one, and it exists because a stranger's
+				agent cannot produce that signature.
+			</P>
+			<P>
+				<Code>createPublicCheelaHandler</Code> is the door your published
+				manifest advertises. No signature, no nonce — the caller is a third
+				party who read your <Code>/.well-known/agent-discovery.json</Code> and
+				is calling the address it names. Cheela is not in that path at all.
+			</P>
+			<CodeBlock filename="app/cheela/public/route.ts">{`import { createPublicCheelaHandler } from "@cheela/runtime";
+import runtime from "../../../.cheela/runtime";
+
+export const POST = createPublicCheelaHandler({
+  runtime,
+  // Nothing else rate-limits this endpoint now that Cheela is not in front
+  // of it. Use whatever store you already run.
+  rateLimit: (key) => myLimiter.take(key),
+});
+
+export const dynamic = "force-dynamic";`}</CodeBlock>
+			<P>
+				<strong>Mounting it is the opt-in.</strong> A runtime that never mounts
+				it serves nothing anonymously, and the signed handler is unaffected
+				either way.
+			</P>
+			<P>
+				What the public door exposes is everything you registered, minus
+				anything marked <Code>requiresEndUser</Code> and called without a
+				credential. That is not a new rule — it is what that flag has always
+				meant, and what Cheela&apos;s own capability broker has done since it
+				shipped. What changes is who makes the HTTP hop, not who may call what.
+			</P>
+			<P>
+				So set <Code>requiresEndUser: true</Code> on anything that acts as
+				somebody: placing an order, reading someone&apos;s history, changing an
+				account. The runtime refuses those calls before your handler runs when
+				no credential is attached, and the public door returns{" "}
+				<Code>401 end_user_required</Code> rather than pretending the capability
+				does not exist.
+			</P>
+			<P>
+				Two things Cheela used to do for you and no longer does on this path: it
+				capped anonymous traffic at a fraction of your quota, and it bounded the
+				request body. The handler caps the body itself (256&nbsp;KB by default,{" "}
+				<Code>maxBodyBytes</Code> to change it); the rate limit is yours.
 			</P>
 
 			<H2 id="web-standard">Next.js, Hono, Bun, Deno, Workers</H2>

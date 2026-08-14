@@ -56,12 +56,24 @@ export default function PublishingAManifestPage() {
 				<Code>/.well-known/agent-discovery.json</Code>.
 			</P>
 
-			<Callout title="Addresses point at Cheela, not at you" tone="note">
+			<Callout title="Addresses point at you, not at Cheela" tone="note">
 				<p>
-					Every capability address in the manifest resolves to Cheela&rsquo;s
-					public broker. Your own endpoint only accepts signed requests from
-					Cheela, so advertising it directly would publish a door nobody can
-					open.
+					Every capability address in the manifest is your own{" "}
+					<Code>publicEndpoint</Code>. A stranger&rsquo;s agent calls you
+					directly; Cheela is not in that path at all.
+				</p>
+				<p>
+					Which means you have to serve it. Mount{" "}
+					<Code>createPublicCheelaHandler</Code> from{" "}
+					<Code>@cheela/runtime</Code> at that address — it is a{" "}
+					<em>different route</em> from your signed <Code>endpoint</Code>, which
+					accepts only requests carrying Cheela&rsquo;s HMAC and would refuse
+					every agent that found you through this document.
+				</p>
+				<p>
+					Without <Code>publicEndpoint</Code> the manifest is refused rather
+					than published with an address that will not resolve. Agents cache
+					manifests and cannot be contacted to correct one.
 				</p>
 			</Callout>
 
@@ -73,7 +85,13 @@ export default function PublishingAManifestPage() {
 			</P>
 			<CodeBlock filename="cheela.config.ts">{`export default defineConfig({
   apiKey: process.env.CHEELA_API_KEY!,
+
+  // Signed calls from Cheela — the chat widget's path.
   endpoint: "https://app.example.com/cheela/execute",
+
+  // Unsigned calls from anyone. This is the address published below, and
+  // the manifest cannot be served without it.
+  publicEndpoint: "https://app.example.com/cheela/public",
 
   // Describes your product, not Cheela.
   website: {
@@ -154,7 +172,7 @@ export default function PublishingAManifestPage() {
       "outputSchema": { "...": "..." },
       "endpoint": {
         "transport": "http",
-        "address": "https://api.cheelalabs.com/v1/capabilities/rt_8f2a/catalog-search",
+        "address": "https://acme.example/cheela/public",
         "auth": "none"
       }
     }
